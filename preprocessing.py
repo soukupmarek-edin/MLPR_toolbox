@@ -4,6 +4,7 @@ Available functions:
 - make_Phi_polynomial_1d
 - make_Phi_rbf_1d
 - standardize
+- train_val_test_split
 """
 
 import numpy as np
@@ -34,3 +35,19 @@ def standardize(X):
         x = X[:, i]
         X_st[:, [i]] = ((x-x.mean())/x.std()).reshape(-1,1)
     return X_st
+
+def train_val_test_split(X, y, shares, random_state=None):
+    assert shares.sum() == 1, "shares must sum to 1"
+    
+    if random_state:
+        np.random.seed(random_state)
+    
+    idxs = np.arange(y.size)
+    train_idx = idxs[:int(y.size*shares[0])]
+    val_idx = idxs[int(y.size*shares[0]): int(y.size*shares[0])+int(y.size*shares[1])]
+    test_idx = idxs[-int(y.size*shares[2]):]
+
+    Xy = np.hstack((X,y))
+    Xy = np.random.permutation(Xy)
+
+    return Xy[train_idx, :-1], Xy[val_idx, :-1], Xy[test_idx, :-1], Xy[train_idx, [-1]], Xy[val_idx, [-1]], Xy[test_idx, [-1]]
