@@ -4,18 +4,18 @@ from MLPR_toolbox.functions import kernel_Sigma
 
 class GaussianProcess:
     
-    def __init__(self, X_train, y_train, X_test):
-        self.X_train, self.y_train, self.X_test = X_train, y_train, X_test
+    def __init__(self, X_train):
+        self.X_train = X_train
         self.N = X_train.shape[0]
-        self.M = X_test.shape[0]
         
     def prior(self, kernel, *kernel_params):
         Sigma = kernel_Sigma(self.X_train, self.X_train, kernel, *kernel_params)
-        prior = stats.multivariate_normal(np.zeros((self.N, self.N)), Sigma + 1e-7*np.eye(self.N))
+        prior = stats.multivariate_normal(np.zeros(self.N), Sigma + 1e-7*np.eye(self.N))
         return prior
     
-    def posterior(self, kernel, *kernel_params):
-        X_train, y_train, X_test = self.X_train, self.y_train, self.X_test
+    def posterior(self, y_train, X_test, kernel, *kernel_params):
+        X_train = self.X_train
+        self.M = X_test.shape[0]
         N, M = self.N, self.M
         
         K_X_X = kernel_Sigma(X_train, X_train, kernel, *kernel_params)

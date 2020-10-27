@@ -11,7 +11,8 @@ GRADIENTS:
 
 LOSSES:
 - square_loss
-- cross_entropy_loss
+- binary_cross_entropy
+- multiclass_cross_entropy
 
 KERNELS:
 - linreg_kernel
@@ -40,11 +41,59 @@ def sigmoid_gradient(Phi, y, w):
 def square_loss(Phi, y, w):
     return (y-Phi@w)**2
 
-def cross_entropy_loss(Phi, y, w):
-    y = y.flatten()
-    preds = sigmoid(Phi@w).flatten()
-    cost = -y*np.log(preds)-(1-y)*np.log(1-preds)
-    return cost.sum()/y.shape[0]
+def softmax(X, W):
+    """
+    A softmax function used for multiclass classification.
+    
+    N - number of samples
+    D - number of features
+    K - number of classes
+    
+    Parameters:
+    ===========
+    X (array): (NxK) design matrix of features
+    W (array): (KxD) matrix of weights for every class
+    
+    Returns:
+    ========
+    scores (array): (NxK) matrix of normalized scores
+    """
+    scores = np.exp(X@W.T)/np.exp(X@W.T).sum(axis=1).reshape(-1,1)
+    return scores
+
+def binary_cross_entropy(y_true, y_pred):
+    """
+    N - number of samples
+    
+    Parameters:
+    ===========
+    y_true (array): (Nx1) column vector of true labels
+    y_pred (array): (Nx1) column vector of predicted labels
+    """
+    y_true = y_true.flatten()
+    y_pred = y_pred.flatten()
+    cost = -y_true*np.log(y_pred)-(1-y_true)*np.log(1-y_pred)
+    return cost.sum()/y_true.size
+
+def multiclass_cross_entropy(Y_true, Y_pred):
+    """
+    N - number of samples
+    K - number of classes
+    
+    Parameters:
+    ===========
+    Y_true (array): (NxK) oneHot-endcoded matrix of true labels
+    Y_pred (array): (NxK) matrix of predicted class probabilities
+    """
+    cost = 0
+    K = Y_true.shape[1]
+    for k in np.arange(K):
+        cost += binary_cross_entropy(Y_true[:, [k]], Y_pred[:, [k]])
+    return cost
+
+#############
+## KERNELS ##
+#############
 
 def linreg_kernel(x1, x2, sigma_sq_w, sigma_sq_b):
     return sigma_sq_w*x1*x2 + sigma_sq_b

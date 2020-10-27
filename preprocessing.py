@@ -5,6 +5,7 @@ Available functions:
 - make_Phi_rbf_1d
 - standardize
 - train_val_test_split
+- oneHotEncode
 """
 
 import numpy as np
@@ -36,7 +37,7 @@ def standardize(X):
         X_st[:, [i]] = ((x-x.mean())/x.std()).reshape(-1,1)
     return X_st
 
-def train_val_test_split(X, y, shares, random_state=None):
+def train_val_test_split(X, y, shares=np.array([0.5, 0.25, 0.25]), random_state=None):
     assert shares.sum() == 1, "shares must sum to 1"
     
     if random_state:
@@ -51,3 +52,9 @@ def train_val_test_split(X, y, shares, random_state=None):
     Xy = np.random.permutation(Xy)
 
     return Xy[train_idx, :-1], Xy[val_idx, :-1], Xy[test_idx, :-1], Xy[train_idx, [-1]], Xy[val_idx, [-1]], Xy[test_idx, [-1]]
+
+def oneHotEncode(y):
+    oh = np.zeros((y.shape[0], np.unique(y).size))
+    for i, c in enumerate(np.sort(np.unique(y))):
+        oh[np.where(y==c), i] += 1
+    return oh
