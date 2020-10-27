@@ -5,6 +5,7 @@ Gradient descent
 import numpy as np
 
 class GradientDescent:
+    
     def __init__(self, Phi, y, gradient, loss):
         self.Phi, self.y = Phi, y
         self.gradient = gradient
