@@ -4,7 +4,10 @@ Available functions:
 - radial_basis_function_1d
 - sigmoid_1d
 - sigmoid
+
+GRADIENTS:
 - square_error_gradient
+-sigmoid_gradient
 
 LOSSES:
 - square_loss
@@ -29,6 +32,10 @@ def sigmoid(a):
 
 def square_error_gradient(Phi, y, w):
     return -2*Phi.T@(y-Phi@w)
+
+def sigmoid_gradient(Phi, y, w):
+    preds = sigmoid(Phi@w)
+    return -np.sum(X.T@(y-preds), axis=1).reshape(-1,1)/y.shape[0]
 
 def square_loss(Phi, y, w):
     return (y-Phi@w)**2
