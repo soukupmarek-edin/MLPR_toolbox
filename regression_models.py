@@ -1,5 +1,6 @@
 from MLPR_toolbox.functions import sigmoid, binary_cross_entropy
 from scipy.optimize import minimize
+import numpy as np
 
 
 class LogisticRegression:
@@ -30,9 +31,10 @@ class LogisticRegression:
         ========
         w_opt (array): a column vector of fitted weights
         """
+        X, y = self.X, self.y
         def fun(w, eps):
-            y_pred = (1-eps)*sigmoid(X_train@w) + eps/2
-            cost = binary_cross_entropy(y_train, y_pred)
+            y_pred = (1-eps)*sigmoid(X@w) + eps/2
+            cost = binary_cross_entropy(y, y_pred)
             return cost
         self.w_opt = minimize(lambda w: fun(w.reshape(-1,1), eps ), x0=np.zeros(2), method='BFGS')['x'].reshape(-1,1)
         return self.w_opt
