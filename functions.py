@@ -23,12 +23,26 @@ KERNELS:
 import numpy as np
 
 def radial_basis_function_1d(x, c, h):
+    """
+    One-dimensional radial basis function
+    
+    Parameters:
+    ===========
+    x (array): vector of data
+    c (float): center of the radial basis function
+    h (float): bandwidth
+    
+    """
     return np.exp(-0.5*(x-c)**2/h**2)
 
 def sigmoid_1d(x, v, b):
     return 1/(1+np.exp(-v*x-b))
 
 def sigmoid(a):
+    """
+    Simple sigmoid function
+    
+    """
     return 1/(1+np.exp(-a))
 
 def square_error_gradient(Phi, y, w):
@@ -57,6 +71,7 @@ def softmax(X, W):
     Returns:
     ========
     scores (array): (NxK) matrix of normalized scores
+    
     """
     scores = np.exp(X@W.T)/np.exp(X@W.T).sum(axis=1).reshape(-1,1)
     return scores
@@ -69,6 +84,11 @@ def binary_cross_entropy(y_true, y_pred):
     ===========
     y_true (array): (Nx1) column vector of true labels
     y_pred (array): (Nx1) column vector of predicted labels
+    
+    Returns:
+    ========
+    cost (float)
+    
     """
     y_true = y_true.flatten()
     y_pred = y_pred.flatten()
@@ -84,6 +104,11 @@ def multiclass_cross_entropy(Y_true, Y_pred):
     ===========
     Y_true (array): (NxK) oneHot-endcoded matrix of true labels
     Y_pred (array): (NxK) matrix of predicted class probabilities
+    
+    Returns:
+    ========
+    cost (float)
+    
     """
     cost = 0
     K = Y_true.shape[1]
