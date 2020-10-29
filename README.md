@@ -15,4 +15,8 @@ TODO:
 
 `radial_basis_function_1d(x, centers, h)`
 
-<img src="https://render.githubusercontent.com/render/math?math=\RBF(x, c, h) = \exp\left(\frac{1}{2}\frac{(x-c)^2}{h^2}\right)">
+<img src="https://render.githubusercontent.com/render/math?math=\RBF(x, c, h) = \exp\left(-\frac{1}{2}\frac{(x-c)^2}{h^2}\right)">
+
+```math
+\sigma(a) = \frac{1}{1%2B\exp(a)}
+```
