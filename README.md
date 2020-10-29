@@ -10,4 +10,5 @@ TODO:
 ## Content
 ### functions
 `sigmoid`
-<img src="https://render.githubusercontent.com/render/math?math=\sigma(a) = \frac{1}{1+\exp(a)}">
+
+<img src="https://render.githubusercontent.com/render/math?math=\sigma(a) = \frac{1}{1%2B\exp(a)}">
