@@ -9,6 +9,10 @@ TODO:
 
 ## Content
 ### functions
-`sigmoid`
+`sigmoid(a)`
 
 <img src="https://render.githubusercontent.com/render/math?math=\sigma(a) = \frac{1}{1%2B\exp(a)}">
+
+`radial_basis_function_1d(x, centers, h)`
+
+<img src="https://render.githubusercontent.com/render/math?math=\RBF(x, c, h) = exp\{\frac{1}{2}\frac{(x-c)^2}}{h^2}}">
